@@ -91,7 +91,7 @@ const DOUBLE_CHARGE_STATUSES = new Set([
 ]);
 
 const HEADER_CANDIDATES = {
-  waybill: ['waybill', 'wbn', 'awb', 'tracking', 'trackingid', 'consignment', 'lrn', 'shipmentid'],
+  waybill: ['wbn', 'waybill', 'awb', 'tracking', 'trackingid', 'consignment', 'lrn', 'shipmentid'],
   mode: ['mode', 'servicetype', 'service', 'shippingmode', 'shipmentmode'],
   zone: ['zone', 'destinationzone', 'region'],
   state: ['state', 'destinationstate', 'to_state', 'to state'],
@@ -99,7 +99,7 @@ const HEADER_CANDIDATES = {
   codAmount: ['codamount', 'cod amount', 'collectableamount', 'collectable amount', 'amount', 'orderamount', 'order amount', 'order value', 'value'],
   deadWeight: ['weight', 'deadweight', 'actualweight', 'shipmentweight', 'dead wt', 'dead_wt'],
   status: ['currentstatus', 'status', 'shipmentstatus'],
-  internalWeight: ['internalweight', 'franchiseweight', 'internal wt', 'weight_internal_weight', 'internalwt', 'franchise wt', 'franchisewt', 'billedweight', 'billed weight', 'finalweight', 'final weight', 'revisedweight', 'revised weight'],
+  internalWeight: ['internal_w', 'internalweight', 'internal wt', 'internalwt', 'franchiseweight', 'franchise wt', 'franchisewt', 'weight_internal_weight', 'billedweight', 'billed weight', 'finalweight', 'final weight', 'revisedweight', 'revised weight'],
   c2cException: ['c2cweightexception', 'c2cexception', 'c2cweight', 'weight exception', 'c2c weight', 'exceptionweight', 'exception weight'],
   slab: ['weightslab', 'slab', 'weight', 'upto', 'range'],
 };
@@ -262,9 +262,19 @@ function App() {
 
       // Debug: log first weight row keys to console for diagnosis
       if (weightRows.length > 0) {
-        console.log('[WeightSheet] First row keys:', Object.keys(weightRows[0]));
-        console.log('[WeightSheet] Sample WBN:', normalizeWaybill(getRowValue(weightRows[0], HEADER_CANDIDATES.waybill)));
-        console.log('[WeightSheet] Sample internalWeight:', getRowValue(weightRows[0], HEADER_CANDIDATES.internalWeight));
+        const firstWeightRow = weightRows[0];
+        const sampleWbn = normalizeWaybill(getRowValue(firstWeightRow, HEADER_CANDIDATES.waybill));
+        const sampleIntWt = getRowValue(firstWeightRow, HEADER_CANDIDATES.internalWeight);
+        console.log('[WeightSheet] First row keys:', Object.keys(firstWeightRow));
+        console.log('[WeightSheet] Sample WBN:', sampleWbn);
+        console.log('[WeightSheet] Sample internalWeight raw:', sampleIntWt);
+        console.log('[WeightSheet] Sample internalWeight normalized (g):', normalizeWeightToGram(sampleIntWt));
+      }
+      if (shipmentRows.length > 0) {
+        const firstShipRow = shipmentRows[0];
+        const sampleWbn = normalizeWaybill(getRowValue(firstShipRow, HEADER_CANDIDATES.waybill));
+        console.log('[ShipmentSheet] First row keys:', Object.keys(firstShipRow));
+        console.log('[ShipmentSheet] Sample WBN:', sampleWbn);
       }
 
       let matchedWeightRowsCount = 0;
