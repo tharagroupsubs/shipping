@@ -99,12 +99,18 @@ const HEADER_CANDIDATES = {
   codAmount: ['codamount', 'cod amount', 'collectableamount', 'collectable amount', 'amount', 'orderamount', 'order amount', 'order value', 'value'],
   deadWeight: ['weight', 'deadweight', 'actualweight', 'shipmentweight', 'dead wt', 'dead_wt'],
   status: ['currentstatus', 'status', 'shipmentstatus'],
-  internalWeight: ['internalweight', 'franchiseweight', 'internal wt', 'weight_internal_weight'],
-  c2cException: ['c2cweightexception', 'c2cexception', 'c2cweight', 'weight exception'],
+  internalWeight: ['internalweight', 'franchiseweight', 'internal wt', 'weight_internal_weight', 'internalwt', 'franchise wt', 'franchisewt', 'billedweight', 'billed weight', 'finalweight', 'final weight', 'revisedweight', 'revised weight'],
+  c2cException: ['c2cweightexception', 'c2cexception', 'c2cweight', 'weight exception', 'c2c weight', 'exceptionweight', 'exception weight'],
   slab: ['weightslab', 'slab', 'weight', 'upto', 'range'],
 };
 
 const normalizeKey = (value) => String(value ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
+// Normalize waybill: stringify, strip trailing .0 from Excel numeric reads, remove spaces
+const normalizeWaybill = (value) => {
+  if (value === null || value === undefined) return '';
+  return String(value).trim().replace(/\.0+$/, '').replace(/\s+/g, '');
+};
 
 const toUpperClean = (value) => String(value ?? '').trim().toUpperCase();
 
@@ -249,16 +255,23 @@ function App() {
       const weightMap = new Map();
       weightRows.forEach((row) => {
         const waybillRaw = getRowValue(row, HEADER_CANDIDATES.waybill);
-        const waybill = String(waybillRaw ?? '').trim();
+        const waybill = normalizeWaybill(waybillRaw);
         if (!waybill) return;
         weightMap.set(waybill, row);
       });
+
+      // Debug: log first weight row keys to console for diagnosis
+      if (weightRows.length > 0) {
+        console.log('[WeightSheet] First row keys:', Object.keys(weightRows[0]));
+        console.log('[WeightSheet] Sample WBN:', normalizeWaybill(getRowValue(weightRows[0], HEADER_CANDIDATES.waybill)));
+        console.log('[WeightSheet] Sample internalWeight:', getRowValue(weightRows[0], HEADER_CANDIDATES.internalWeight));
+      }
 
       let matchedWeightRowsCount = 0;
       let eligibleStatusesCount = 0;
 
       const output = shipmentRows.map((shipment) => {
-        const waybill = String(getRowValue(shipment, HEADER_CANDIDATES.waybill) ?? '').trim();
+        const waybill = normalizeWaybill(getRowValue(shipment, HEADER_CANDIDATES.waybill));
         const mode = toUpperClean(getRowValue(shipment, HEADER_CANDIDATES.mode)) || 'SURFACE';
         const zone = extractZone(shipment);
         const statusValue = toUpperClean(getRowValue(shipment, HEADER_CANDIDATES.status)).replace(/[\s-]+/g, '_');
@@ -266,7 +279,7 @@ function App() {
         const codAmount = parseNumeric(getRowValue(shipment, HEADER_CANDIDATES.codAmount)) ?? 0;
         const deadWeight = normalizeWeightToGram(getRowValue(shipment, HEADER_CANDIDATES.deadWeight));
 
-        const matchedWeightRow = waybill ? weightMap.get(waybill) : null;
+        const matchedWeightRow = waybill ? weightMap.get(normalizeWaybill(waybill)) : null;
         const internalWeight = normalizeWeightToGram(getRowValue(matchedWeightRow || {}, HEADER_CANDIDATES.internalWeight));
         const c2cWeightException = normalizeWeightToGram(getRowValue(matchedWeightRow || {}, HEADER_CANDIDATES.c2cException));
 
