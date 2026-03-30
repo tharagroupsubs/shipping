@@ -167,7 +167,8 @@ const extractZone = (row) => {
 };
 
 const getMatchedSlab = (sortedSlabs, weightInGram) => {
-  if (!sortedSlabs.length || weightInGram === null) return null;
+  if (!sortedSlabs.length) return null;
+  if (weightInGram === null) return sortedSlabs[0];
   return sortedSlabs.find((item) => weightInGram <= item.slabUpper) || sortedSlabs[sortedSlabs.length - 1];
 };
 
@@ -309,6 +310,7 @@ function App() {
         return {
           ...shipment,
           'Current Status': statusValue,
+          'Zone': zone || 'UNKNOWN',
           'Charged Weight': chargedWeight,
           'Shipping Charges': shippingCharge,
         };
@@ -475,6 +477,7 @@ function App() {
                   <tr>
                     <th>Waybill / WBN</th>
                     <th>Current Status</th>
+                    <th>Zone</th>
                     <th>Charged Weight</th>
                     <th>Shipping Charges</th>
                   </tr>
@@ -484,6 +487,7 @@ function App() {
                     <tr key={idx}>
                       <td>{getRowValue(row, HEADER_CANDIDATES.waybill) || row['Waybill / WBN'] || '-'}</td>
                       <td>{row['Current Status'] || '-'}</td>
+                      <td>{row['Zone'] || '-'}</td>
                       <td>{row['Charged Weight'] || '-'}</td>
                       <td style={{ fontWeight: '700', color: typeof row['Shipping Charges'] === 'number' ? 'var(--success)' : 'var(--text-muted)' }}>
                         {typeof row['Shipping Charges'] === 'number' ? `₹${row['Shipping Charges']}` : '-'}
