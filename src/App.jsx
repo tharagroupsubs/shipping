@@ -443,8 +443,9 @@ function App() {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Shipping Costs");
     
-    const date = new Date().toISOString().split('T')[0];
-    XLSX.writeFile(workbook, `shipping_costs_${date}.xlsx`);
+    const now = new Date();
+    const formattedDate = `${String(now.getMonth() + 1).padStart(2, '0')}/${String(now.getDate()).padStart(2, '0')}/${String(now.getFullYear()).slice(-2)}`;
+    XLSX.writeFile(workbook, `shipping_costs_${formattedDate}.xlsx`);
   };
 
   const activeRateSheet = selectedRateCard === 'custom'
