@@ -77,6 +77,73 @@ const DEFAULT_SHIPPING_RATES = [
   { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 320, B: 350, C: 400, D: 460, E: 480, F: 560 } },
 ];
 
+const RATE_CARD_LABELS = {
+  basic: 'Basic Rate Card',
+  ekart: 'MS Natural Products Rate Card',
+  kurikkalEkart: 'Kurikkal Global Associates eKart Rate Card',
+  delhivery: 'PZ Soles Rate Card',
+  kurikkal: 'Kurikkal Global Associates Delhivery Rate Card',
+  custom: 'Custom Rate Card',
+};
+
+const PRESET_RATE_CARDS = {
+  basic: DEFAULT_SHIPPING_RATES,
+  ekart: [
+    { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 45, B: 57, C: 67, D: 70, E: 85, F: 88 } },
+    { mode: 'SURFACE', slabUpper: 1000, zoneCharges: { A: 63, B: 78, C: 90, D: 92, E: 130, F: 140 } },
+    { mode: 'SURFACE', slabUpper: 1500, zoneCharges: { A: 80, B: 115, C: 130, D: 140, E: 175, F: 195 } },
+    { mode: 'SURFACE', slabUpper: 2000, zoneCharges: { A: 110, B: 140, C: 160, D: 180, E: 220, F: 250 } },
+    { mode: 'SURFACE', slabUpper: 2500, zoneCharges: { A: 125, B: 170, C: 195, D: 220, E: 265, F: 300 } },
+    { mode: 'SURFACE', slabUpper: 3000, zoneCharges: { A: 145, B: 200, C: 230, D: 255, E: 310, F: 355 } },
+    { mode: 'SURFACE', slabUpper: 3500, zoneCharges: { A: 162, B: 230, C: 265, D: 295, E: 355, F: 405 } },
+    { mode: 'SURFACE', slabUpper: 4000, zoneCharges: { A: 185, B: 260, C: 295, D: 335, E: 400, F: 460 } },
+    { mode: 'SURFACE', slabUpper: 4500, zoneCharges: { A: 208, B: 290, C: 340, D: 380, E: 450, F: 510 } },
+    { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 230, B: 320, C: 370, D: 425, E: 495, F: 565 } },
+  ],
+  kurikkalEkart: [
+    { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 50, B: 70, C: 80, D: 85, E: 110, F: 130 } },
+    { mode: 'SURFACE', slabUpper: 1000, zoneCharges: { A: 70, B: 90, C: 110, D: 120, E: 155, F: 185 } },
+    { mode: 'SURFACE', slabUpper: 1500, zoneCharges: { A: 100, B: 110, C: 143, D: 166, E: 188, F: 208 } },
+    { mode: 'SURFACE', slabUpper: 2000, zoneCharges: { A: 115, B: 138, C: 178, D: 190, E: 245, F: 275 } },
+    { mode: 'SURFACE', slabUpper: 2500, zoneCharges: { A: 138, B: 162, C: 205, D: 215, E: 295, F: 325 } },
+    { mode: 'SURFACE', slabUpper: 3000, zoneCharges: { A: 155, B: 177, C: 240, D: 250, E: 345, F: 375 } },
+    { mode: 'SURFACE', slabUpper: 3500, zoneCharges: { A: 176, B: 199, C: 280, D: 290, E: 395, F: 425 } },
+    { mode: 'SURFACE', slabUpper: 4000, zoneCharges: { A: 196, B: 238, C: 310, D: 330, E: 445, F: 475 } },
+    { mode: 'SURFACE', slabUpper: 4500, zoneCharges: { A: 217, B: 255, C: 345, D: 370, E: 495, F: 525 } },
+    { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 237, B: 288, C: 380, D: 410, E: 545, F: 575 } },
+    { mode: 'SURFACE', slabUpper: 6000, zoneCharges: { A: 285, B: 340, C: 410, D: 450, E: 595, F: 625 } },
+  ],
+  kurikkal: [
+    { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 50, B: 70, C: 80, D: 85, E: 95, F: 100 } },
+    { mode: 'SURFACE', slabUpper: 1000, zoneCharges: { A: 70, B: 90, C: 95, D: 100, E: 150, F: 160 } },
+    { mode: 'SURFACE', slabUpper: 1500, zoneCharges: { A: 100, B: 110, C: 138, D: 147, E: 176, F: 194 } },
+    { mode: 'SURFACE', slabUpper: 2000, zoneCharges: { A: 115, B: 131, C: 174, D: 186, E: 224, F: 247 } },
+    { mode: 'SURFACE', slabUpper: 2500, zoneCharges: { A: 135, B: 154, C: 210, D: 226, E: 272, F: 300 } },
+    { mode: 'SURFACE', slabUpper: 3000, zoneCharges: { A: 155, B: 177, C: 246, D: 266, E: 320, F: 353 } },
+    { mode: 'SURFACE', slabUpper: 3500, zoneCharges: { A: 176, B: 199, C: 282, D: 305, E: 368, F: 406 } },
+    { mode: 'SURFACE', slabUpper: 4000, zoneCharges: { A: 196, B: 222, C: 318, D: 345, E: 416, F: 459 } },
+    { mode: 'SURFACE', slabUpper: 4500, zoneCharges: { A: 217, B: 245, C: 354, D: 384, E: 464, F: 512 } },
+    { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 237, B: 267, C: 390, D: 424, E: 512, F: 565 } },
+    { mode: 'SURFACE', slabUpper: 6000, zoneCharges: { A: 268, B: 301, C: 451, D: 487, E: 584, F: 645 } },
+    { mode: 'SURFACE', slabUpper: 7000, zoneCharges: { A: 299, B: 335, C: 513, D: 550, E: 657, F: 726 } },
+    { mode: 'SURFACE', slabUpper: 8000, zoneCharges: { A: 330, B: 369, C: 574, D: 612, E: 730, F: 807 } },
+    { mode: 'SURFACE', slabUpper: 9000, zoneCharges: { A: 361, B: 403, C: 636, D: 675, E: 802, F: 888 } },
+    { mode: 'SURFACE', slabUpper: 10000, zoneCharges: { A: 391, B: 437, C: 698, D: 738, E: 875, F: 969 } },
+  ],
+  delhivery: [
+    { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 50, B: 56, C: 60, D: 60, E: 85, F: 85 } },
+    { mode: 'SURFACE', slabUpper: 1000, zoneCharges: { A: 70, B: 86, C: 86, D: 86, E: 145, F: 155 } },
+    { mode: 'SURFACE', slabUpper: 1500, zoneCharges: { A: 100, B: 130, C: 135, D: 140, E: 200, F: 210 } },
+    { mode: 'SURFACE', slabUpper: 2000, zoneCharges: { A: 125, B: 160, C: 175, D: 190, E: 240, F: 260 } },
+    { mode: 'SURFACE', slabUpper: 2500, zoneCharges: { A: 150, B: 190, C: 215, D: 235, E: 280, F: 310 } },
+    { mode: 'SURFACE', slabUpper: 3000, zoneCharges: { A: 175, B: 220, C: 255, D: 280, E: 320, F: 360 } },
+    { mode: 'SURFACE', slabUpper: 3500, zoneCharges: { A: 200, B: 250, C: 295, D: 325, E: 360, F: 410 } },
+    { mode: 'SURFACE', slabUpper: 4000, zoneCharges: { A: 225, B: 280, C: 315, D: 370, E: 400, F: 445 } },
+    { mode: 'SURFACE', slabUpper: 4500, zoneCharges: { A: 250, B: 310, C: 355, D: 415, E: 440, F: 495 } },
+    { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 275, B: 340, C: 410, D: 460, E: 480, F: 560 } },
+  ],
+};
+
 const ALLOWED_STATUSES = new Set([
   'DELIVERED',
   'OUT_FOR_DELIVERY',
@@ -190,6 +257,11 @@ function App() {
   const [summary, setSummary] = useState(null);
   const [previewData, setPreviewData] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
+  const [selectedRateCard, setSelectedRateCard] = useState('basic');
+  const [customShippingRates, setCustomShippingRates] = useState(DEFAULT_SHIPPING_RATES.map((rate) => ({
+    ...rate,
+    zoneCharges: { ...rate.zoneCharges },
+  })));
 
   const shipmentInputRef = useRef(null);
   const weightInputRef = useRef(null);
@@ -294,9 +366,11 @@ function App() {
         const c2cWeightException = normalizeWeightToGram(getRowValue(matchedWeightRow || {}, HEADER_CANDIDATES.c2cException));
 
         const effectiveWeight = c2cWeightException ?? internalWeight ?? deadWeight;
-
-        const modeRates = DEFAULT_SHIPPING_RATES.filter((rate) => rate.mode === mode);
-        const ratesToUse = modeRates.length ? modeRates : DEFAULT_SHIPPING_RATES;
+        const selectedRates = selectedRateCard === 'custom'
+          ? customShippingRates
+          : PRESET_RATE_CARDS[selectedRateCard] || DEFAULT_SHIPPING_RATES;
+        const modeRates = selectedRates.filter((rate) => rate.mode === mode);
+        const ratesToUse = modeRates.length ? modeRates : selectedRates;
         const slab = getMatchedSlab(ratesToUse, effectiveWeight);
 
         let normalRate = null;
@@ -373,6 +447,27 @@ function App() {
     XLSX.writeFile(workbook, `shipping_costs_${date}.xlsx`);
   };
 
+  const activeRateSheet = selectedRateCard === 'custom'
+    ? customShippingRates
+    : PRESET_RATE_CARDS[selectedRateCard] || DEFAULT_SHIPPING_RATES;
+
+  const handleCustomRateChange = (index, zone, value) => {
+    const parsed = Number(value);
+    if (Number.isNaN(parsed)) return;
+    setCustomShippingRates((prevRates) => prevRates.map((rate, idx) => {
+      if (idx !== index) return rate;
+      return {
+        ...rate,
+        zoneCharges: {
+          ...rate.zoneCharges,
+          [zone]: parsed,
+        },
+      };
+    }));
+  };
+
+  const isCustomCard = selectedRateCard === 'custom';
+
   return (
     <div className="container">
       <header className="header">
@@ -423,7 +518,23 @@ function App() {
         </div>
 
         <div className="rates-preview">
-          <h4>Default Fixed Rate Sheet (SURFACE)</h4>
+          <div className="rate-card-selector">
+            <label htmlFor="rate-card-select">Choose Rate Card</label>
+            <select
+              id="rate-card-select"
+              value={selectedRateCard}
+              onChange={(event) => setSelectedRateCard(event.target.value)}
+            >
+              <option value="basic">Basic Rate Card</option>
+              <option value="ekart">MS Natural Products Rate Card</option>
+              <option value="kurikkalEkart">Kurikkal Global Associates eKart Rate Card</option>
+              <option value="kurikkal">Kurikkal Global Associates Delhivery Rate Card</option>
+              <option value="delhivery">PZ Soles Rate Card</option>
+              <option value="custom">Custom Rate Card</option>
+            </select>
+          </div>
+
+          <h4>{RATE_CARD_LABELS[selectedRateCard]} Rates</h4>
           <div className="rates-table-container">
             <table className="rates-table">
               <thead>
@@ -438,20 +549,31 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {DEFAULT_SHIPPING_RATES.map((rate, idx) => (
+                {activeRateSheet.map((rate, idx) => (
                   <tr key={idx}>
                     <td>{rate.slabUpper}</td>
-                    <td>{rate.zoneCharges.A}</td>
-                    <td>{rate.zoneCharges.B}</td>
-                    <td>{rate.zoneCharges.C}</td>
-                    <td>{rate.zoneCharges.D}</td>
-                    <td>{rate.zoneCharges.E}</td>
-                    <td>{rate.zoneCharges.F}</td>
+                    {['A', 'B', 'C', 'D', 'E', 'F'].map((zone) => (
+                      <td key={zone}>
+                        {isCustomCard ? (
+                          <input
+                            type="number"
+                            min="0"
+                            value={rate.zoneCharges[zone]}
+                            onChange={(event) => handleCustomRateChange(idx, zone, event.target.value)}
+                          />
+                        ) : (
+                          rate.zoneCharges[zone]
+                        )}
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          {isCustomCard && (
+            <p className="custom-rate-note">Custom rate card is active. Update values directly in the table above to change the shipping calculation.</p>
+          )}
         </div>
 
         {errorMessage && (
