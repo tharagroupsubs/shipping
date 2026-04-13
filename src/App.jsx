@@ -79,6 +79,7 @@ const DEFAULT_SHIPPING_RATES = [
 
 const RATE_CARD_LABELS = {
   basic: 'Basic Rate Card',
+  hyderabad: 'Hyderabad Rate Card',
   ekart: 'MS Natural Products Rate Card',
   kurikkalEkart: 'Kurikkal Global Associates eKart Rate Card',
   delhivery: 'PZ Soles Rate Card',
@@ -88,6 +89,18 @@ const RATE_CARD_LABELS = {
 
 const PRESET_RATE_CARDS = {
   basic: DEFAULT_SHIPPING_RATES,
+  hyderabad: [
+    { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 55, B: 75, C: 85, D: 85, E: 95, F: 100 } },
+    { mode: 'SURFACE', slabUpper: 1000, zoneCharges: { A: 75, B: 95, C: 105, D: 105, E: 145, F: 155 } },
+    { mode: 'SURFACE', slabUpper: 1500, zoneCharges: { A: 110, B: 130, C: 145, D: 145, E: 200, F: 210 } },
+    { mode: 'SURFACE', slabUpper: 2000, zoneCharges: { A: 135, B: 160, C: 190, D: 190, E: 240, F: 260 } },
+    { mode: 'SURFACE', slabUpper: 2500, zoneCharges: { A: 160, B: 190, C: 235, D: 235, E: 280, F: 310 } },
+    { mode: 'SURFACE', slabUpper: 3000, zoneCharges: { A: 190, B: 220, C: 280, D: 280, E: 320, F: 360 } },
+    { mode: 'SURFACE', slabUpper: 3500, zoneCharges: { A: 215, B: 250, C: 325, D: 325, E: 360, F: 410 } },
+    { mode: 'SURFACE', slabUpper: 4000, zoneCharges: { A: 240, B: 280, C: 370, D: 370, E: 400, F: 460 } },
+    { mode: 'SURFACE', slabUpper: 4500, zoneCharges: { A: 255, B: 310, C: 415, D: 415, E: 440, F: 510 } },
+    { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 280, B: 340, C: 460, D: 460, E: 480, F: 560 } },
+  ],
   ekart: [
     { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 45, B: 57, C: 67, D: 70, E: 85, F: 88 } },
     { mode: 'SURFACE', slabUpper: 1000, zoneCharges: { A: 63, B: 78, C: 90, D: 92, E: 130, F: 140 } },
@@ -527,6 +540,7 @@ function App() {
               onChange={(event) => setSelectedRateCard(event.target.value)}
             >
               <option value="basic">Basic Rate Card</option>
+              <option value="hyderabad">Hyderabad Rate Card</option>
               <option value="ekart">MS Natural Products Rate Card</option>
               <option value="kurikkalEkart">Kurikkal Global Associates eKart Rate Card</option>
               <option value="kurikkal">Kurikkal Global Associates Delhivery Rate Card</option>
