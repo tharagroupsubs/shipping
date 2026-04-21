@@ -75,6 +75,21 @@ const DEFAULT_SHIPPING_RATES = [
   { mode: 'SURFACE', slabUpper: 4000, zoneCharges: { A: 260, B: 285, C: 320, D: 375, E: 400, F: 460 } },
   { mode: 'SURFACE', slabUpper: 4500, zoneCharges: { A: 290, B: 320, C: 360, D: 420, E: 440, F: 510 } },
   { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 320, B: 350, C: 400, D: 460, E: 480, F: 560 } },
+  { mode: 'SURFACE', slabUpper: 6000, zoneCharges: { A: 360, B: 400, C: 460, D: 515, E: 540, F: 625 } },
+  { mode: 'SURFACE', slabUpper: 7000, zoneCharges: { A: 390, B: 430, C: 515, D: 570, E: 600, F: 685 } },
+  { mode: 'SURFACE', slabUpper: 8000, zoneCharges: { A: 420, B: 460, C: 570, D: 625, E: 660, F: 745 } },
+  { mode: 'SURFACE', slabUpper: 9000, zoneCharges: { A: 450, B: 490, C: 625, D: 680, E: 720, F: 805 } },
+  { mode: 'SURFACE', slabUpper: 10000, zoneCharges: { A: 480, B: 520, C: 680, D: 735, E: 780, F: 865 } },
+  { mode: 'SURFACE', slabUpper: 11000, zoneCharges: { A: 510, B: 550, C: 735, D: 790, E: 840, F: 925 } },
+  { mode: 'SURFACE', slabUpper: 12000, zoneCharges: { A: 540, B: 580, C: 790, D: 845, E: 900, F: 985 } },
+  { mode: 'SURFACE', slabUpper: 13000, zoneCharges: { A: 570, B: 610, C: 845, D: 900, E: 960, F: 1045 } },
+  { mode: 'SURFACE', slabUpper: 14000, zoneCharges: { A: 600, B: 640, C: 900, D: 955, E: 1020, F: 1105 } },
+  { mode: 'SURFACE', slabUpper: 15000, zoneCharges: { A: 630, B: 670, C: 955, D: 1010, E: 1080, F: 1165 } },
+  { mode: 'SURFACE', slabUpper: 16000, zoneCharges: { A: 660, B: 700, C: 1010, D: 1065, E: 1140, F: 1225 } },
+  { mode: 'SURFACE', slabUpper: 17000, zoneCharges: { A: 690, B: 730, C: 1065, D: 1120, E: 1200, F: 1285 } },
+  { mode: 'SURFACE', slabUpper: 18000, zoneCharges: { A: 720, B: 760, C: 1120, D: 1175, E: 1260, F: 1345 } },
+  { mode: 'SURFACE', slabUpper: 19000, zoneCharges: { A: 750, B: 790, C: 1175, D: 1230, E: 1320, F: 1405 } },
+  { mode: 'SURFACE', slabUpper: 20000, zoneCharges: { A: 780, B: 820, C: 1230, D: 1285, E: 1380, F: 1465 } },
 ];
 
 const RATE_CARD_LABELS = {
