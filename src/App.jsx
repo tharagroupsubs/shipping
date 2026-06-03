@@ -63,6 +63,84 @@ const ZONE_MAP = {
   "LAKSHADWEEP": "F", "LD": "F",
 };
 
+const HYDERABAD_ZONE_MAP = {
+  // ZONE A: WITHIN STATE (TELANGANA)
+  "TELANGANA": "A", "TS": "A", "TG": "A",
+  "HYDERABAD": "A",
+
+  // ZONE B: MAHARASHTRA, ANDHRA PRADESH
+  "MAHARASHTRA": "B", "MH": "B",
+  "ANDHRA PRADESH": "B", "AP": "B", "ANDHRA": "B",
+
+  // ZONE C: SOUTH INDIA (KERALA, TAMIL NADU, KARNATAKA)
+  "KERALA": "C", "KL": "C", "KERLA": "C",
+  "TAMIL NADU": "C", "TN": "C", "TAMILNADU": "C",
+  "KARNATAKA": "C", "KA": "C", "KARNATKA": "C",
+
+  // ZONE D: NORTH INDIA (DELHI, GUJARAT, WEST BENGAL, MADHYA PRADESH)
+  "DELHI": "D", "DL": "D", "NCR": "D",
+  "GUJARAT": "D", "GJ": "D",
+  "WEST BENGAL": "D", "WB": "D",
+  "MADHYA PRADESH": "D", "MP": "D",
+
+  // ZONE E: NORTH EAST, HP, JAMMU
+  "ASSAM": "E", "AS": "E",
+  "ARUNACHAL PRADESH": "E", "AR": "E", "ARUNACHAL": "E",
+  "MEGHALAYA": "E", "ML": "E",
+  "MIZORAM": "E", "MZ": "E",
+  "NAGALAND": "E", "NL": "E",
+  "TRIPURA": "E", "TR": "E",
+  "SIKKIM": "E", "SK": "E",
+  "HIMACHAL PRADESH": "E", "HP": "E", "HIMACHAL": "E",
+  "JAMMU": "E",
+
+  // ZONE F: KASHMIR, MANIPUR, LADAKH
+  "KASHMIR": "F",
+  "JAMMU & KASHMIR": "F", "J&K": "F", "JK": "F",
+  "MANIPUR": "F", "MN": "F",
+  "LADAKH": "F", "LA": "F",
+};
+
+const ANDHRA_PRADESH_ZONE_MAP = {
+  // ZONE A: WITHIN STATE (ANDHRA PRADESH)
+  "ANDHRA PRADESH": "A", "AP": "A", "ANDHRA": "A",
+
+  // ZONE B: KERALA, TAMIL NADU, KARNATAKA, TELANGANA (HYDERABAD)
+  "KERALA": "B", "KL": "B", "KERLA": "B",
+  "TAMIL NADU": "B", "TN": "B", "TAMILNADU": "B",
+  "KARNATAKA": "B", "KA": "B", "KARNATKA": "B",
+  "TELANGANA": "B", "TS": "B", "TG": "B", "HYDERABAD": "B",
+
+  // ZONE C: CHENNAI, PUNE, MUMBAI, GOA
+  "CHENNAI": "C",
+  "PUNE": "C",
+  "MUMBAI": "C", "BOMBAY": "C",
+  "GOA": "C", "GA": "C",
+
+  // ZONE D: DELHI, GUJARAT, WEST BENGAL, MADHYA PRADESH
+  "DELHI": "D", "DL": "D", "NCR": "D",
+  "GUJARAT": "D", "GJ": "D",
+  "WEST BENGAL": "D", "WB": "D",
+  "MADHYA PRADESH": "D", "MP": "D",
+
+  // ZONE E: NORTH EAST, HP, JAMMU
+  "ASSAM": "E", "AS": "E",
+  "ARUNACHAL PRADESH": "E", "AR": "E", "ARUNACHAL": "E",
+  "MEGHALAYA": "E", "ML": "E",
+  "MIZORAM": "E", "MZ": "E",
+  "NAGALAND": "E", "NL": "E",
+  "TRIPURA": "E", "TR": "E",
+  "SIKKIM": "E", "SK": "E",
+  "HIMACHAL PRADESH": "E", "HP": "E", "HIMACHAL": "E",
+  "JAMMU": "E",
+
+  // ZONE F: KASHMIR, MANIPUR, LADAKH
+  "KASHMIR": "F",
+  "JAMMU & KASHMIR": "F", "J&K": "F", "JK": "F",
+  "MANIPUR": "F", "MN": "F",
+  "LADAKH": "F", "LA": "F",
+};
+
 // Default fixed rate sheet from business tariff (SURFACE)
 const DEFAULT_SHIPPING_RATES = [
   { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 55, B: 75, C: 80, D: 85, E: 95, F: 100 } },
@@ -95,6 +173,7 @@ const DEFAULT_SHIPPING_RATES = [
 const RATE_CARD_LABELS = {
   basic: 'Basic Rate Card',
   hyderabad: 'Hyderabad Rate Card',
+  andhraB2C: 'Andhra Pradesh - B2C Price List - November 2023',
   ekart: 'MS Natural Products Rate Card',
   kurikkalEkart: 'Kurikkal Global Associates eKart Rate Card',
   delhivery: 'PZ Soles Rate Card',
@@ -115,6 +194,18 @@ const PRESET_RATE_CARDS = {
     { mode: 'SURFACE', slabUpper: 4000, zoneCharges: { A: 240, B: 280, C: 370, D: 370, E: 400, F: 460 } },
     { mode: 'SURFACE', slabUpper: 4500, zoneCharges: { A: 255, B: 310, C: 415, D: 415, E: 440, F: 510 } },
     { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 280, B: 340, C: 460, D: 460, E: 480, F: 560 } },
+  ],
+  andhraB2C: [
+    { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 55, B: 80, C: 80, D: 85, E: 95, F: 100 } },
+    { mode: 'SURFACE', slabUpper: 1000, zoneCharges: { A: 75, B: 100, C: 100, D: 105, E: 145, F: 155 } },
+    { mode: 'SURFACE', slabUpper: 1500, zoneCharges: { A: 105, B: 145, C: 145, D: 150, E: 200, F: 210 } },
+    { mode: 'SURFACE', slabUpper: 2000, zoneCharges: { A: 135, B: 190, C: 190, D: 195, E: 240, F: 260 } },
+    { mode: 'SURFACE', slabUpper: 2500, zoneCharges: { A: 165, B: 235, C: 235, D: 240, E: 280, F: 310 } },
+    { mode: 'SURFACE', slabUpper: 3000, zoneCharges: { A: 195, B: 280, C: 280, D: 285, E: 320, F: 360 } },
+    { mode: 'SURFACE', slabUpper: 3500, zoneCharges: { A: 225, B: 325, C: 325, D: 330, E: 360, F: 410 } },
+    { mode: 'SURFACE', slabUpper: 4000, zoneCharges: { A: 255, B: 370, C: 370, D: 375, E: 400, F: 460 } },
+    { mode: 'SURFACE', slabUpper: 4500, zoneCharges: { A: 285, B: 415, C: 415, D: 420, E: 440, F: 510 } },
+    { mode: 'SURFACE', slabUpper: 5000, zoneCharges: { A: 315, B: 460, C: 460, D: 465, E: 480, F: 560 } },
   ],
   ekart: [
     { mode: 'SURFACE', slabUpper: 500, zoneCharges: { A: 45, B: 57, C: 67, D: 70, E: 85, F: 88 } },
@@ -251,26 +342,34 @@ const getRowValue = (row, candidates) => {
   return key ? row[key] : null;
 };
 
-const extractZone = (row) => {
+const extractZone = (row, zoneMap) => {
   const zoneValue = toUpperClean(getRowValue(row, HEADER_CANDIDATES.zone));
   if (zoneValue) {
     const normalizedZone = zoneValue.replace(/^ZONE\s*/i, '').trim();
     if (/^[A-F]$/.test(normalizedZone)) return normalizedZone;
-    if (ZONE_MAP[normalizedZone]) return ZONE_MAP[normalizedZone];
+    if (zoneMap[normalizedZone]) return zoneMap[normalizedZone];
   }
 
   const stateValue = toUpperClean(getRowValue(row, HEADER_CANDIDATES.state));
   if (!stateValue) return '';
-  const direct = ZONE_MAP[stateValue];
+  const direct = zoneMap[stateValue];
   if (direct) return direct;
-  const fuzzy = Object.keys(ZONE_MAP).find((state) => stateValue.includes(state));
-  return fuzzy ? ZONE_MAP[fuzzy] : '';
+  const fuzzy = Object.keys(zoneMap).find((state) => stateValue.includes(state));
+  return fuzzy ? zoneMap[fuzzy] : '';
 };
 
 const getMatchedSlab = (sortedSlabs, weightInGram) => {
   if (!sortedSlabs.length) return null;
   if (weightInGram === null) return sortedSlabs[0];
   return sortedSlabs.find((item) => weightInGram <= item.slabUpper) || sortedSlabs[sortedSlabs.length - 1];
+};
+
+const getCodFee = (rateCard, codAmount) => {
+  const percentFee = codAmount * 0.02;
+  if (rateCard === 'andhraB2C') {
+    return Math.max(45, percentFee);
+  }
+  return codAmount > 2000 ? percentFee : 40;
 };
 
 function App() {
@@ -383,7 +482,12 @@ function App() {
       const output = shipmentRows.map((shipment) => {
         const waybill = normalizeWaybill(getRowValue(shipment, HEADER_CANDIDATES.waybill));
         const mode = toUpperClean(getRowValue(shipment, HEADER_CANDIDATES.mode)) || 'SURFACE';
-        const zone = extractZone(shipment);
+        const zoneMap = selectedRateCard === 'hyderabad'
+          ? HYDERABAD_ZONE_MAP
+          : selectedRateCard === 'andhraB2C'
+            ? ANDHRA_PRADESH_ZONE_MAP
+            : ZONE_MAP;
+        const zone = extractZone(shipment, zoneMap);
         const statusValue = toUpperClean(getRowValue(shipment, HEADER_CANDIDATES.status)).replace(/[\s-]+/g, '_');
         const paymentType = toUpperClean(getRowValue(shipment, HEADER_CANDIDATES.paymentType));
         const codAmount = parseNumeric(getRowValue(shipment, HEADER_CANDIDATES.codAmount)) ?? 0;
@@ -418,7 +522,7 @@ function App() {
             if (isRtoStatus) {
               shippingCharge = fixedShippingRate;
             } else {
-              const codFee = codAmount > 2000 ? codAmount * 0.02 : 40;
+              const codFee = getCodFee(selectedRateCard, codAmount);
               shippingCharge = fixedShippingRate + codFee;
             }
           } else {
@@ -496,6 +600,25 @@ function App() {
   };
 
   const isCustomCard = selectedRateCard === 'custom';
+  const zoneHeaderLabels = selectedRateCard === 'hyderabad'
+    ? {
+        A: 'Within State (Telangana)',
+        B: 'Maharashtra & Andhra Pradesh',
+        C: 'South India (Kerala, Tamil Nadu, Karnataka)',
+        D: 'North India (Delhi, Gujarat, West Bengal, Madhya Pradesh)',
+        E: 'North East, HP, Jammu',
+        F: 'Kashmir, Manipur, Ladakh',
+      }
+    : selectedRateCard === 'andhraB2C'
+      ? {
+          A: 'Within State (Andhra Pradesh)',
+          B: 'Zone B (Kerala, Tamil Nadu, Karnataka, Hyderabad)',
+          C: 'Zone C (Chennai, Pune, Mumbai, Goa)',
+          D: 'Zone D (Delhi, Gujarat, West Bengal, Madhya Pradesh)',
+          E: 'Zone E (North East, HP, Jammu)',
+          F: 'Zone F (Kashmir, Manipur, Ladakh)',
+        }
+      : null;
 
   return (
     <div className="container">
@@ -556,6 +679,7 @@ function App() {
             >
               <option value="basic">Basic Rate Card</option>
               <option value="hyderabad">Hyderabad Rate Card</option>
+              <option value="andhraB2C">Andhra Pradesh - B2C Price List - November 2023</option>
               <option value="ekart">MS Natural Products Rate Card</option>
               <option value="kurikkalEkart">Kurikkal Global Associates eKart Rate Card</option>
               <option value="kurikkal">Kurikkal Global Associates Delhivery Rate Card</option>
@@ -570,12 +694,14 @@ function App() {
               <thead>
                 <tr>
                   <th>Weight</th>
-                  <th>Zone A</th>
-                  <th>Zone B</th>
-                  <th>Zone C</th>
-                  <th>Zone D</th>
-                  <th>Zone E</th>
-                  <th>Zone F</th>
+                  {['A', 'B', 'C', 'D', 'E', 'F'].map((zone) => (
+                    <th key={zone}>
+                      <span>{`Zone ${zone}`}</span>
+                      {zoneHeaderLabels?.[zone] && (
+                        <span className="zone-label">{zoneHeaderLabels[zone]}</span>
+                      )}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
