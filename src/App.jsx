@@ -375,9 +375,11 @@ const getCodFee = (rateCard, codAmount) => {
 function App() {
   const [shipmentRows, setShipmentRows] = useState([]);
   const [weightRows, setWeightRows] = useState([]);
+  const [volumetricWeightRows, setVolumetricWeightRows] = useState([]);
   const [fileNames, setFileNames] = useState({
     shipments: '',
     weights: '',
+    volumetricWeights: '',
   });
   const [isProcessing, setIsProcessing] = useState(false);
   const [status, setStatus] = useState('pending');
@@ -392,14 +394,17 @@ function App() {
 
   const shipmentInputRef = useRef(null);
   const weightInputRef = useRef(null);
+  const volumetricWeightInputRef = useRef(null);
 
   const resetApp = () => {
     if (shipmentInputRef.current) shipmentInputRef.current.value = '';
     if (weightInputRef.current) weightInputRef.current.value = '';
+    if (volumetricWeightInputRef.current) volumetricWeightInputRef.current.value = '';
 
     setShipmentRows([]);
     setWeightRows([]);
-    setFileNames({ shipments: '', weights: '' });
+    setVolumetricWeightRows([]);
+    setFileNames({ shipments: '', weights: '', volumetricWeights: '' });
     setStatus('pending');
     setSummary(null);
     setPreviewData([]);
@@ -431,6 +436,7 @@ function App() {
 
         if (type === 'shipments') setShipmentRows(data);
         if (type === 'weights') setWeightRows(data);
+        if (type === 'volumetricWeights') setVolumetricWeightRows(data);
       } catch (err) {
         alert("Error reading excel file. Please ensure it's a valid .xlsx or .csv file.");
         console.error(err);
@@ -457,6 +463,14 @@ function App() {
         const waybill = normalizeWaybill(waybillRaw);
         if (!waybill) return;
         weightMap.set(waybill, row);
+      });
+
+      const volumetricWeightMap = new Map();
+      volumetricWeightRows.forEach((row) => {
+        const waybillRaw = getRowValue(row, HEADER_CANDIDATES.waybill);
+        const waybill = normalizeWaybill(waybillRaw);
+        if (!waybill) return;
+        volumetricWeightMap.set(waybill, row);
       });
 
       // Debug: log first weight row keys to console for diagnosis
@@ -494,10 +508,19 @@ function App() {
         const deadWeight = normalizeWeightToGram(getRowValue(shipment, HEADER_CANDIDATES.deadWeight));
 
         const matchedWeightRow = waybill ? weightMap.get(normalizeWaybill(waybill)) : null;
+        const matchedVolumetricRow = waybill ? volumetricWeightMap.get(normalizeWaybill(waybill)) : null;
         const internalWeight = normalizeWeightToGram(getRowValue(matchedWeightRow || {}, HEADER_CANDIDATES.internalWeight));
         const c2cWeightException = normalizeWeightToGram(getRowValue(matchedWeightRow || {}, HEADER_CANDIDATES.c2cException));
 
-        const effectiveWeight = c2cWeightException ?? internalWeight ?? deadWeight;
+        const initialEffectiveWeight = c2cWeightException ?? internalWeight ?? deadWeight;
+        const volumetricFinalWt = normalizeWeightToGram(getRowValue(matchedVolumetricRow || {}, ['finalwt2', 'final wt 2', 'final weight 2', 'volumetric_final wt 2']));
+        
+        let effectiveWeight = initialEffectiveWeight;
+        if (initialEffectiveWeight !== null && volumetricFinalWt !== null) {
+          effectiveWeight = Math.max(initialEffectiveWeight, volumetricFinalWt);
+        } else if (volumetricFinalWt !== null) {
+          effectiveWeight = volumetricFinalWt;
+        }
         const selectedRates = selectedRateCard === 'custom'
           ? customShippingRates
           : PRESET_RATE_CARDS[selectedRateCard] || DEFAULT_SHIPPING_RATES;
@@ -536,8 +559,26 @@ function App() {
         if (isValidStatus) eligibleStatusesCount += 1;
 
         // Keep all uploaded columns and only update/add the requested output columns.
+        let volumetricCols = {};
+        if (matchedVolumetricRow) {
+          const EXCLUDED_VOLUMETRIC_COLS = new Set([
+            'waybill_num',
+            'zone',
+            'product_value',
+            'order_id',
+            'item_shipped'
+          ]);
+          for (const key of Object.keys(matchedVolumetricRow)) {
+            const normalizedKey = String(key).toLowerCase().trim();
+            if (!EXCLUDED_VOLUMETRIC_COLS.has(normalizedKey)) {
+              volumetricCols[`Volumetric_${key}`] = matchedVolumetricRow[key];
+            }
+          }
+        }
+
         return {
           ...shipment,
+          ...volumetricCols,
           'Current Status': statusValue,
           'Charged Weight': chargedWeight,
           'Shipping Charges': shippingCharge,
@@ -664,6 +705,25 @@ function App() {
             {fileNames.weights && (
               <div className="file-info">
                 <CheckCircle2 size={16} /> {fileNames.weights}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="upload-section">
+          <div className={`upload-box wide ${volumetricWeightRows.length > 0 ? 'active' : ''}`}>
+            <input
+              ref={volumetricWeightInputRef}
+              type="file"
+              accept=".xlsx, .xls, .csv"
+              onChange={(event) => handleFileUpload(event, 'volumetricWeights')}
+            />
+            <Upload className="upload-icon" />
+            <h3>Volumetric Weight Sheet (Optional)</h3>
+            <p>Waybill/WBN and all other columns to compare</p>
+            {fileNames.volumetricWeights && (
+              <div className="file-info">
+                <CheckCircle2 size={16} /> {fileNames.volumetricWeights}
               </div>
             )}
           </div>
