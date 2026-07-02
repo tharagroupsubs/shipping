@@ -513,8 +513,16 @@ function App() {
         const c2cWeightException = normalizeWeightToGram(getRowValue(matchedWeightRow || {}, HEADER_CANDIDATES.c2cException));
 
         const initialEffectiveWeight = c2cWeightException ?? internalWeight ?? deadWeight;
-        const volumetricFinalWt = normalizeWeightToGram(getRowValue(matchedVolumetricRow || {}, ['finalwt2', 'final wt 2', 'final weight 2', 'volumetric_final wt 2']));
+        let volumetricFinalWt = normalizeWeightToGram(getRowValue(matchedVolumetricRow || {}, ['finalwt2', 'final wt 2', 'final weight 2', 'volumetric_final wt 2']));
         
+        if (volumetricFinalWt !== null) {
+          if (volumetricFinalWt <= 5000) {
+            volumetricFinalWt = Math.max(500, Math.ceil(volumetricFinalWt / 500) * 500);
+          } else {
+            volumetricFinalWt = Math.ceil(volumetricFinalWt / 1000) * 1000;
+          }
+        }
+
         let effectiveWeight = initialEffectiveWeight;
         if (initialEffectiveWeight !== null && volumetricFinalWt !== null) {
           effectiveWeight = Math.max(initialEffectiveWeight, volumetricFinalWt);
@@ -569,9 +577,14 @@ function App() {
             'item_shipped'
           ]);
           for (const key of Object.keys(matchedVolumetricRow)) {
-            const normalizedKey = String(key).toLowerCase().trim();
-            if (!EXCLUDED_VOLUMETRIC_COLS.has(normalizedKey)) {
-              volumetricCols[`Volumetric_${key}`] = matchedVolumetricRow[key];
+            const trimmedKey = String(key).toLowerCase().trim();
+            const normalizedKey = trimmedKey.replace(/[^a-z0-9]/g, '');
+            if (!EXCLUDED_VOLUMETRIC_COLS.has(trimmedKey)) {
+              if (['finalwt2', 'finalweight2', 'volumetricfinalwt2'].includes(normalizedKey) && volumetricFinalWt !== null) {
+                volumetricCols[`Volumetric_${key}`] = volumetricFinalWt;
+              } else {
+                volumetricCols[`Volumetric_${key}`] = matchedVolumetricRow[key];
+              }
             }
           }
         }
